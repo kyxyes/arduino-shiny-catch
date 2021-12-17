@@ -1,6 +1,4 @@
 '''
-Authors: Antonella Ruales and Joaquín Ruales
-
 This Python program runs in the host computer and communicates with the Arduino.
 The main objective of this program is to wait for instructions from the arduino, and once the message is received from the Arduino, capture a picture with the webcam and use OpenCV to detect if the Rowlet is shiny or not. Then, the program notifies the Arduino if it's shiny to determine if to soft reset the 3DS.
 
@@ -34,10 +32,10 @@ TOGEKISS_PIXEL_X = 475
 TOGEKISS_PIXEL_Y = 314
 
 sensitivity = 15
-LOWER_WHITE = np.array([80,10,40])
-UPPER_WHITE = np.array([100,80,255])
-LOWER_GREEN = np.array([40, 50, 50])
-UPPER_GREEN = np.array([100, 255,155])
+LOWER_WHITE = np.array([80, 10, 40])
+UPPER_WHITE = np.array([100, 80, 255])
+LOWER_GREEN = np.array([40, 90, 20])
+UPPER_GREEN = np.array([95, 255, 250])
 
 mainFolder = '/Users/yuxinkang/Documents/Arduino/'
 
