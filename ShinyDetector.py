@@ -144,28 +144,28 @@ def isItShiny():
                     return False
 
 if __name__ == '__main__':
-    # ser = serial.Serial(ARDUINO_PORT, ARDUINO_BAUD_RATE)
-    # while True:
-    #     # Empty line
-    #     print()
+    ser = serial.Serial(ARDUINO_PORT, ARDUINO_BAUD_RATE)
+    while True:
+        # Empty line
+        print()
 
-    #     # Wait for message from Arduino
-    #     #message = b'Command: checkIfShiny\r\n'
-    #     message = ser.readline()
-    #     print("Message from Arduino: ")
-    #     print(message)
+        # Wait for message from Arduino
+        #message = b'Command: checkIfShiny\r\n'     <- this line is for testing
+        message = ser.readline()
+        print("Message from Arduino: ")
+        print(message)
         if PHOTO_CALIBRATION: 
             calibrate()
         else: 
     
-    #     if message == b'Command: checkIfShiny\r\n':
+         if message == b'Command: checkIfShiny\r\n':
             if isItShiny():
                 print('Shiny!')
-     #           ser.write(b'y')
+                ser.write(b'y')
             else:
                 print('Not shiny')
-      #          ser.write(b'n')
-        # else:
-        #     '''
-        #     Do nothing
-        #     '''
+                ser.write(b'n')
+         else:
+             '''
+             Do nothing
+             '''
