@@ -8,13 +8,13 @@
 // Declare the Servo pin 
 int servoPin = 5; 
 int servoPin3 = 6; 
-int calibration = true;
+int calibration = false;
 
 int servoAngleAX = 90;
 int servoAngleA = servoAngleAX;
 int servoAngleX = servoAngleAX;
 int servoAngleHome = 90;
-int totalEncounters = 1200;
+int totalEncounters = 5;
 bool keepLooping = true;
 
 // Create a servo object 
@@ -27,6 +27,8 @@ void setup() {
    ServoHome.attach(servoPin3);
 
    initialButtons();
+
+   delay(10000);
    
    Serial.begin(9600); // open a serial connection to your computer
 }
@@ -45,14 +47,14 @@ void pressAButton() {
 
 void pressXButton() {
     int pressDurationInMs = 300;
-    ServoA.write(120);
+    ServoA.write(130);
     delay(pressDurationInMs);
     ServoA.write(servoAngleA);
 }
 
 void pressHomeButton() {
       int pressDurationInMs = 300;
-      ServoHome.write(60); 
+      ServoHome.write(50); 
       delay(pressDurationInMs);
       ServoHome.write(servoAngleHome); 
 }
@@ -100,16 +102,16 @@ void loop(){
    pressAButton(); // Press the A button screen
 
 
-   Serial.println("Waiting entering the game and meet giratina");
-   delay(10000);      //wait entering the game;
+   Serial.println("Waiting entering the game and meet pokemon");
+   delay(12000);      //wait entering the game;
 
-   //-------At Game, meet giratina
+   //-------At Game, meet legendary pokemen
 
-   Serial.println("Talk to giratina and start battle");
-   pressAButton(); // Talk to giratina
+   Serial.println("Talk to legendary pokemen and start battle");
+   pressAButton(); // Talk to legendary pokemen
    delay(2000);
-   pressAButton(); // ...Bishaan!
-   delay(22000);   // Starting battle.. start anime
+   pressAButton(); // ...Blablabal!
+   delay(17000);   // Starting battle.. start anime
 
 
    // ---- Send commond to do picture analysis

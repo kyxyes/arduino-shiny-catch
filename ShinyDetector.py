@@ -17,7 +17,7 @@ import cv2
 import numpy as np
 
 WEBCAM_NUMBER = 0
-ARDUINO_PORT = 'COM3'
+ARDUINO_PORT = '/dev/tty.usbmodem14201'
 ARDUINO_BAUD_RATE = 9600
 HUMAN_CLASSIFICATION = False
 PHOTO_CALIBRATION = False
@@ -28,12 +28,12 @@ RAYQYAZA_PIXEL_Y = 298
 
 
 # coordinates of Togekiss, she is white, determine Togekiss is on left side to make sure we have right screenshot
-TOGEKISS_PIXEL_X = 475
+TOGEKISS_PIXEL_X = 465
 TOGEKISS_PIXEL_Y = 314
 
 sensitivity = 15
-LOWER_WHITE = np.array([80, 10, 40])
-UPPER_WHITE = np.array([100, 80, 255])
+LOWER_WHITE = np.array([80, 0, 40])
+UPPER_WHITE = np.array([120, 80, 255])
 LOWER_GREEN = np.array([40, 90, 20])
 UPPER_GREEN = np.array([95, 255, 250])
 
@@ -108,17 +108,17 @@ def isItShiny():
         mask_white = cv2.inRange(hsv, LOWER_WHITE, UPPER_WHITE)
         mask_green = cv2.inRange(hsv, LOWER_GREEN, UPPER_GREEN)
 
-        cv2.imwrite(mainFolder + 'img/evidence/' + currentDateTimeString + '_frame.png', frame)
+        cv2.imwrite(mainFolder + 'img/evidence/' + currentDateTimeString + '_frame' + str(retry) + '.png', frame)
 
         # Apply a bitwise-AND between the mask and the original image
         res_white = cv2.bitwise_and(frame,frame, mask= mask_white)
-        cv2.imwrite(mainFolder + 'img/evidence/' + currentDateTimeString + '_mask_white.png', mask_white)
-        cv2.imwrite(mainFolder + 'img/evidence/' + currentDateTimeString + '_res_white.png', res_white)
+        cv2.imwrite(mainFolder + 'img/evidence/' + currentDateTimeString + '_mask_white' + str(retry) + '.png', mask_white)
+        cv2.imwrite(mainFolder + 'img/evidence/' + currentDateTimeString + '_res_white' + str(retry) + '.png', res_white)
 
         res_green = cv2.bitwise_and(frame,frame, mask= mask_green)
-        cv2.imwrite(mainFolder + 'img/evidence/' + currentDateTimeString + '_mask_green.png', mask_green)
-        cv2.imwrite(mainFolder + 'img/evidence/' + currentDateTimeString + '_res_green.png', res_green)
-        print(mainFolder + 'img/evidence/' + currentDateTimeString + '_frame.png')
+        cv2.imwrite(mainFolder + 'img/evidence/' + currentDateTimeString + '_mask_green' + str(retry) + '.png', mask_green)
+        cv2.imwrite(mainFolder + 'img/evidence/' + currentDateTimeString + '_res_green' + str(retry) + '.png', res_green)
+        print(mainFolder + 'img/evidence/' + currentDateTimeString + '_frame' + str(retry) + '.png')
 
         if HUMAN_CLASSIFICATION:
             isShiny = input('Is this Pokemon shiny? [y/n]')
@@ -129,7 +129,7 @@ def isItShiny():
                 print('Togekiss is not showing up on left side of screen! we will take another webcam picture and try again')
                 time.sleep(1)
                 retry = retry + 1
-                if retry == 3:
+                if retry == 4:
                     print('Togekiss is not showing up on left side of screen! Can not check shiny! Need manully reset')
                     return False
                 else:
@@ -144,20 +144,22 @@ def isItShiny():
                     return False
 
 if __name__ == '__main__':
+
     ser = serial.Serial(ARDUINO_PORT, ARDUINO_BAUD_RATE)
     while True:
         # Empty line
         print()
 
-        # Wait for message from Arduino
-        #message = b'Command: checkIfShiny\r\n'     <- this line is for testing
-        message = ser.readline()
-        print("Message from Arduino: ")
-        print(message)
         if PHOTO_CALIBRATION: 
             calibrate()
+            isItShiny()
+            break
         else: 
-    
+         # Wait for message from Arduino
+         #message = b'Command: checkIfShiny\r\n'    # <- this line is for testing
+         message = ser.readline()
+         print("Message from Arduino: ")
+         print(message)
          if message == b'Command: checkIfShiny\r\n':
             if isItShiny():
                 print('Shiny!')
